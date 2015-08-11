@@ -1,0 +1,87 @@
+#how to install lava in Ubuntu 14.04
+
+##background
+
+* lava concepts could get from 'http://events.linuxfoundation.org/sites/events/files/slides/Tyler-Baker-Linaro-LinuxCon-2013.pdf'
+
+##instal the package that could compatible with the Openlab in HQ
+
+        sudo apt-add-repository "deb     http://people.linaro.org/~neil.williams/lava sid main"
+        wget http://people.linaro.org/~neil.williams/lava/0x7C751B3F.asc
+        sudo apt-key add 0x7C751B3F.asc
+        sudo apt-get update
+        sudo apt-get install lava-server=2015.01-1
+
+refer to: https://validation.linaro.org/static/docs/installing_on_debian.html#trusty-tahr-install
+
+##update the lava worker's configuration
+
+* update `cat /etc/lava-server/instance.conf ` like following: 
+        
+        ...
+        # PostgreSQL configuration
+        LAVA_DB_NAME="lavaserver"
+        LAVA_DB_USER="lavaserver"
+        LAVA_DB_SERVER="htsat.vicp.cc"
+        LAVA_DB_PORT="809"
+        LAVA_DB_PASSWORD="pwiLzt1F4PR2"
+        # Scheduler configuration
+        LAVA_SCHEDULER_ENABLED="yes"
+        LAVA_SERVER_IP="192.168.0.3"
+        ...
+    
+        
+* change the hostname
+    update '/etc/hostname' and '/etc/hosts' 
+    
+* run the command 'sudo service lava-server restart'
+
+* try to mount lava server's file system by sshfs since we update the ssh port
+
+        sudo su lavaserver -c "sshfs -p 220 -o nonempty -o allow_other lavaserver@htsat.vicp.cc:/var/lib/lava-server//default/media 
+        /var/lib/lava-server/default/media"
+    
+* go to open the page 'http://htsat.vicp.cc:800/scheduler/' and see the 'Workers' section.  
+if everything is OK, a new worker should come serveral seconds later.
+
+
+##how to add devices into the lava
+
+1. add device type at 'http://htsat.vicp.cc:800/admin/lava_scheduler_app/devicetype/'.  
+could refer to 'https://validation.linaro.org/static/docs/running.html#adding-devices'
+
+2. add device configuration at '/etc/lava-dispatcher/device-types' like this 'https://validation.linaro.org/static/docs/pipeline-admin-example.html?highlight=boot_cmds'
+
+2. add device at 'http://htsat.vicp.cc:800/admin/lava_scheduler_app/device/'
+
+3. add device configuration at '/etc/lava-dispatcher/devices' like following:
+
+        $ cat D02-labcamb-192.168.0.140.conf 
+        device_type = d02
+        hostname = D02-labcamb-192.168.0.140
+        connection_command = telnet localhost 20140
+
+could refer to 'https://validation.linaro.org/static/docs/tftp-deploy.html?highlight=boot_cmds'
+
+and the define 'https://github.com/Linaro/lava-dispatcher/blob/release/lava_dispatcher/default-config/lava-dispatcher/device-defaults.conf'
+
+dispatcher actions define:
+'https://validation.linaro.org/static/docs/dispatcher-actions.html'
+
+#lava_dis
+
+https://github.com/Linaro/lava-dispatcher/blob/release/lava_dispatcher/downloader.py 
+
+urllib2.quote(url.geturl(), safe=":/") ->
+urllib2.quote(url.geturl(), safe=":/%")
+
+
+lava-dispatcher/lava_dispatcher/device/bootloader.py
+323 line hard_reboot
+
+lava-dispatcher/lava_dispatcher/config.py
+test_image_prompts
+
+#lava testcase git repo
+
+* https://git.linaro.org/qa/test-definitions.git/tree
