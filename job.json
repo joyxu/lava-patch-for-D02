@@ -1,0 +1,37 @@
+{
+	"actions": [
+	{
+		"command": "deploy_linaro_kernel",
+		"parameters": {
+			"kernel": "https://github.com/hisilicon/estuary/releases/download/bin-v1.2/hip05-d02.dtb",
+			"dtb": "https://github.com/hisilicon/estuary/releases/download/bin-v1.2/Image",
+			"bootloadertype": "ipxe"
+		}
+	},
+	{
+		      "command": "boot_linaro_image"
+	},
+	{
+		"command": "lava_test_shell",
+		"parameters": {
+			"testdef_repos": [
+			{
+				"git-repo": "https://git.linaro.org/qa/test-definitions.git",
+				"testdef": "device-tree.yaml"
+			}
+			],
+				"timeout": 900
+		}
+	},
+	{
+		"command": "submit_results",
+		"parameters": {
+			"server": "http://labcamb@htsat.vicp.cc:800//RPC2/",
+			"stream": "/anonymous/labcamb/"
+		}
+	}
+	],
+		"device_type": "d02",
+		"job_name": "d02-labcamb-test",
+		"timeout": 1800
+}
