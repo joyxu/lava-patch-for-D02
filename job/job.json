@@ -14,13 +14,10 @@
 	{
 		"command": "lava_test_shell",
 		"parameters": {
-			"testdef_repos": [
-			{
-				"git-repo": "https://git.linaro.org/qa/test-definitions.git",
-				"testdef": "device-tree.yaml"
-			}
-			],
-				"timeout": 900
+			"testdef_urls": [
+				"https://git.linaro.org/qa/test-definitions.git/blob/HEAD:/ubuntu/ltp.yaml"
+				],
+			"timeout": 1800
 		}
 	},
 	{
