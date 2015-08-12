@@ -6,6 +6,10 @@
 
 ##instal the package that could compatible with the Openlab in HQ
 
+		sudo apt-add-repository "deb [arch=amd64] http://images.validation.linaro.org/trusty-repo trusty main"
+		wget http://images.validation.linaro.org/trusty-repo/trusty-repo.key.asc
+		sudo apt-key add trusty-repo.key.asc
+
         sudo apt-add-repository "deb     http://people.linaro.org/~neil.williams/lava sid main"
         wget http://people.linaro.org/~neil.williams/lava/0x7C751B3F.asc
         sudo apt-key add 0x7C751B3F.asc
