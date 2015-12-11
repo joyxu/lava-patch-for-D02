@@ -37,8 +37,16 @@ refer to: https://validation.linaro.org/static/docs/installing_on_debian.html#tr
         
 * change the hostname
     update '/etc/hostname' and '/etc/hosts' 
-    
-* run the command 'sudo service lava-server restart'
+
+* change the 'Master RPC2 URL' at http://192.168.0.102:8081/admin/lava_scheduler_app/worker/f00297740a/
+
+* run the command 'sudo service lava-server restart' and check mount output
+that sshfs is there or manually run the command: 
+
+	sudo -u lavaserver sshfs  -o allow_root -o reconnect -o
+	TCPKeepAlive=yes -o ServerAliveCountMax=1
+	lavaserver@172.18.45.36:/var/lib/lava-server/default/media
+	/var/lib/lava-server/default/media
 
 * try to mount lava server's file system by sshfs since we update the ssh port
 
